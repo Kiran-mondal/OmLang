@@ -2,8 +2,10 @@ export default function Header({ handleSave, isSaving, handleRun }) {
   return (
     <header className="flex items-center justify-between bg-[#010409] px-4 py-3 border-b border-[#30363d] text-sm">
       <div className="flex items-center gap-3">
-        <img src="/logo.svg" alt="OmLang Logo" className="w-8 h-8 rounded-lg shadow-[0_0_10px_rgba(0,229,255,0.3)]" />
-        <span className="font-bold text-gray-200 tracking-wider text-lg">OmLang Studio</span>
+        {/* ছবি বাদ দিয়ে টেক্সটটিকে বড় এবং গ্লোয়িং নীল গ্রেডিয়েন্ট দেওয়া হয়েছে */}
+        <span className="font-extrabold tracking-widest text-xl bg-clip-text text-transparent bg-gradient-to-r from-[#00E5FF] to-[#0055FF]">
+          OM LANG STUDIO
+        </span>
       </div>
       
       <div className="flex items-center gap-2">
