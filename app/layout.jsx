@@ -1,3 +1,5 @@
+import './globals.css'; // <-- This is the magic line that activates Tailwind CSS
+
 export const metadata = {
   title: 'OmLang | The Modern Programming Language',
   description: 'OmLang is an open-source, multi-target programming language supporting Web, APK, and Local execution with built-in matrix logic.',
@@ -5,7 +7,7 @@ export const metadata = {
   openGraph: {
     title: 'OmLang | Write Once, Run Anywhere',
     description: 'Explore the next generation of programming with OmLang.',
-    url: 'https://omlang.com', // পরে আপনার আসল ডোমেইন দেবেন
+    url: 'https://omlang.quarry.dpdns.org', // Updated to your actual custom domain
     siteName: 'OmLang',
     type: 'website',
   },
