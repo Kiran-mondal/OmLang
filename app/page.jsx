@@ -7,17 +7,19 @@ import Editor from '../components/Editor';
 import Terminal from '../components/Terminal';
 
 export default function Home() {
-  // শুধুমাত্র একটি ফাইল হিসেবে শুরু হবে
-  const [file, setFile] = useState({ name: 'main.om', code: 'show "Hello Kiran!"\n\nmatrix M = [10, 20 | 30, 40]\nshow M' });
+  const [file, setFile] = useState({ 
+    name: 'main.om', 
+    code: 'show "Hello Kiran!"\n\nmatrix M = [10, 20 | 30, 40]\nshow M' 
+  });
   const [output, setOutput] = useState('');
   const [isSaving, setIsSaving] = useState(false);
 
   const updateCode = (newCode) => {
-    setFile({ ...file, code: newCode });
+    setFile(prev => ({ ...prev, code: newCode }));
   };
 
   const renameFile = (newName) => {
-    setFile({ ...file, name: newName });
+    setFile(prev => ({ ...prev, name: newName }));
   };
 
   const highlightCode = (code) => {
@@ -31,17 +33,48 @@ export default function Home() {
   };
 
   const handleRun = () => {
-    if (!file.name.toLowerCase().endsWith('.om')) {
-      setOutput(`[Error] Execution Failed!\nOnly '.om' files are supported.`);
+    // সেফটি চেক: Vercel বিল্ড এরর ঠেকানোর জন্য
+    const safeName = file?.name || 'main.om';
+    
+    if (!safeName.toLowerCase().endsWith('.om')) {
+      setOutput(`[Error] Execution Failed!\nOnly '.om' files are supported by the OmLang Compiler.`);
       return;
     }
-    const result = runOmLang(file.code);
-    setOutput(`Compiling ${file.name}...\n\n` + result);
+    const result = runOmLang(file?.code || '');
+    setOutput(`Compiling ${safeName}...\n\n` + result);
+  };
+
+  // আসল Cloud Sync লজিক (Neon Database এর জন্য)
+  const handleSave = async () => {
+    setIsSaving(true);
+    const safeName = file?.name || 'main.om';
+    const safeCode = file?.code || '';
+
+    try {
+      const response = await fetch('/api/save-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: safeName,
+          code: safeCode
+        })
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setOutput(`\n--- CLOUD SYNC ---\n[Success] '${safeName}' saved to Neon DB at ${new Date().toLocaleTimeString()}\nSnippet ID: ${data.data?.id || 'N/A'}\n------------------\n\n` + output);
+      } else {
+        setOutput(`\n--- CLOUD SYNC ---\n[Error] ${data.error}\n------------------\n\n` + output);
+      }
+    } catch (error) {
+      setOutput(`\n--- CLOUD SYNC ---\n[Error] Network failure.\n------------------\n\n` + output);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
     <div className="flex h-screen w-full flex-col bg-[#0d1117] text-[#c9d1d9] font-sans overflow-hidden">
-      <Header handleSave={() => {}} isSaving={isSaving} handleRun={handleRun} />
+      <Header handleSave={handleSave} isSaving={isSaving} handleRun={handleRun} />
       
       <div className="flex flex-1 overflow-hidden">
         <Editor 
@@ -51,7 +84,9 @@ export default function Home() {
           highlightCode={highlightCode} 
         />
       </div>
-      <Terminal fileName={file.name} output={output} />
+      
+      {/* সেফটি চেক সহ টার্মিনাল রেন্ডার */}
+      <Terminal fileName={file?.name || 'main.om'} output={output} />
     </div>
   );
 }
