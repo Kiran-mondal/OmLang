@@ -1,13 +1,38 @@
-// app/page.jsx
 'use client';
 
 import { useState } from 'react';
 
 export default function Home() {
   const [code, setCode] = useState('Show "Hlw"');
+  const [output, setOutput] = useState('');
 
   const handleRun = () => {
-    alert("OmLang Web Compiler is coming soon! Your code: \n" + code);
+    // Basic Web Parser for OmLang
+    const lines = code.split('\n');
+    let currentOutput = '';
+
+    lines.forEach((line) => {
+      const trimmedLine = line.trim();
+      
+      // Look for the "Show" command
+      if (trimmedLine.startsWith('Show ')) {
+        const startQuote = trimmedLine.indexOf('"');
+        const endQuote = trimmedLine.lastIndexOf('"');
+        
+        // Extract text between quotes
+        if (startQuote !== -1 && endQuote !== -1 && startQuote < endQuote) {
+          const textToPrint = trimmedLine.substring(startQuote + 1, endQuote);
+          currentOutput += textToPrint + '\n';
+        } else {
+          currentOutput += `Syntax Error: Missing quotes in '${trimmedLine}'\n`;
+        }
+      } else if (trimmedLine !== '') {
+        currentOutput += `Error: Unknown command -> '${trimmedLine}'\n`;
+      }
+    });
+
+    // Update the terminal screen
+    setOutput(currentOutput || 'No output.');
   };
 
   return (
@@ -23,7 +48,7 @@ export default function Home() {
           <textarea
             value={code}
             onChange={(e) => setCode(e.target.value)}
-            rows="12"
+            rows="8"
             style={{
               width: '100%',
               maxWidth: '800px',
@@ -48,11 +73,29 @@ export default function Home() {
             fontWeight: 'bold',
             border: 'none',
             borderRadius: '5px',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            marginBottom: '20px'
           }}
         >
           ▶ Run Code
         </button>
+
+        {/* NEW: Terminal Output Section */}
+        <div style={{ maxWidth: '800px' }}>
+          <label style={{ display: 'block', marginBottom: '10px', fontSize: '1.2rem', color: '#888' }}>Terminal Output</label>
+          <div style={{
+            backgroundColor: '#0d1117',
+            color: '#e6edf3',
+            padding: '15px',
+            border: '1px solid #30363d',
+            borderRadius: '8px',
+            minHeight: '120px',
+            whiteSpace: 'pre-wrap', // Keeps the line breaks
+            fontFamily: 'monospace'
+          }}>
+            {output}
+          </div>
+        </div>
       </main>
     </div>
   );
