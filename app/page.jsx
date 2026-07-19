@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { runOmLang } from '../lib/omlang/Engine';
 
 export default function Home() {
+  // ফাইলের নাম পরিবর্তন করার জন্য নতুন স্টেট
+  const [fileName, setFileName] = useState('main.om');
   const [code, setCode] = useState('show "Hlw Kiran"');
   const [output, setOutput] = useState('');
   const [isSaving, setIsSaving] = useState(false);
@@ -20,7 +22,7 @@ export default function Home() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          title: 'main.om',
+          title: fileName, // এখন হার্ডকোডেড নামের বদলে ইউজারের দেওয়া নাম সেভ হবে
           code: code
         })
       });
@@ -28,7 +30,7 @@ export default function Home() {
       const data = await response.json();
       
       if (response.ok) {
-        setOutput(`\n--- CLOUD SYNC ---\n[Success] File saved to Neon DB at ${new Date().toLocaleTimeString()}\nSnippet ID: ${data.data.id}\n------------------\n\n` + output);
+        setOutput(`\n--- CLOUD SYNC ---\n[Success] File '${fileName}' saved to Neon DB at ${new Date().toLocaleTimeString()}\nSnippet ID: ${data.data.id}\n------------------\n\n` + output);
       } else {
         setOutput(`\n--- CLOUD SYNC ---\n[Error] ${data.error}\n------------------\n\n` + output);
       }
@@ -51,7 +53,6 @@ export default function Home() {
           <span className="sm:ml-4 font-semibold text-gray-300 tracking-wider">OmLang Studio</span>
         </div>
         
-        {/* Buttons: Added whitespace-nowrap and adjusted padding/text to fix mobile layout */}
         <div className="flex items-center gap-2">
           <button 
             onClick={handleSave}
@@ -89,8 +90,9 @@ export default function Home() {
                   omlang-project
                 </summary>
                 <div className="pl-6 mt-1 flex flex-col gap-1">
-                  <div className="flex items-center gap-2 px-2 py-1 text-sm bg-[#161b22] text-[#58a6ff] rounded border-l-2 border-[#58a6ff] cursor-pointer">
-                    main.om
+                  <div className="flex items-center gap-2 px-2 py-1 text-sm bg-[#161b22] text-[#58a6ff] rounded border-l-2 border-[#58a6ff] cursor-pointer font-mono">
+                    {/* সাইডবারেও ডায়নামিক নাম দেখাবে */}
+                    {fileName}
                   </div>
                 </div>
               </details>
@@ -103,7 +105,15 @@ export default function Home() {
           
           <div className="flex bg-[#010409] border-b border-[#30363d]">
             <div className="px-4 py-2 bg-[#0d1117] border-t-2 border-[#58a6ff] text-sm text-gray-200 flex items-center gap-2">
-              main.om
+              <svg className="w-4 h-4 text-[#58a6ff]" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+              {/* ইউজারের ফাইলের নাম এডিট করার অপশন */}
+              <input
+                type="text"
+                value={fileName}
+                onChange={(e) => setFileName(e.target.value)}
+                className="bg-transparent border-none outline-none text-[#e6edf3] font-mono text-sm w-32 focus:bg-[#161b22] focus:ring-1 focus:ring-[#58a6ff] rounded px-1 transition-all"
+                placeholder="filename.om"
+              />
             </div>
           </div>
 
@@ -119,7 +129,7 @@ export default function Home() {
             />
           </div>
 
-          {/* Terminal Section (Profiler removed for clean UI) */}
+          {/* Terminal Section */}
           <div className="h-64 bg-[#010409] border-t border-[#30363d] flex flex-col">
             <div className="flex px-4 border-b border-[#30363d] gap-6 text-xs uppercase tracking-wider font-semibold text-gray-500">
               <div className="py-3 text-[#e6edf3] border-b-2 border-[#58a6ff]">
@@ -129,7 +139,7 @@ export default function Home() {
             
             <div className="flex-1 overflow-y-auto p-4 font-mono text-sm">
               <div className="text-[#a5d6ff] whitespace-pre-wrap">
-                <span className="text-[#4ade80]">volt@desktop</span>:<span className="text-[#58a6ff]">~/omlang</span>$ om compile --release{'\n'}
+                <span className="text-[#4ade80]">volt@desktop</span>:<span className="text-[#58a6ff]">~/omlang</span>$ om compile {fileName} --release{'\n'}
                 {output || 'Awaiting execution...'}
               </div>
             </div>
@@ -138,4 +148,4 @@ export default function Home() {
       </div>
     </div>
   );
-}
+      }
