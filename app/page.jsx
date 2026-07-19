@@ -3,35 +3,68 @@
 import { useState } from 'react';
 
 export default function Home() {
-  const [code, setCode] = useState('Show "Hlw"');
+  // আমি ডিফল্ট কোডটি আপনার ম্যাথ লজিক দিয়ে আপডেট করে দিয়েছি
+  const [code, setCode] = useState('a = 3\nb = 2\nr = a + b\nshow r');
   const [output, setOutput] = useState('');
 
   const handleRun = () => {
-    // Basic Web Parser for OmLang
     const lines = code.split('\n');
     let currentOutput = '';
+    
+    // এটি OmLang-এর র‍্যাম (RAM) বা মেমোরি হিসেবে কাজ করবে
+    let memory = {}; 
 
     lines.forEach((line) => {
       const trimmedLine = line.trim();
-      
-      // Look for the "Show" command
-      if (trimmedLine.startsWith('Show ')) {
-        const startQuote = trimmedLine.indexOf('"');
-        const endQuote = trimmedLine.lastIndexOf('"');
-        
-        // Extract text between quotes
-        if (startQuote !== -1 && endQuote !== -1 && startQuote < endQuote) {
-          const textToPrint = trimmedLine.substring(startQuote + 1, endQuote);
-          currentOutput += textToPrint + '\n';
-        } else {
-          currentOutput += `Syntax Error: Missing quotes in '${trimmedLine}'\n`;
+      if (!trimmedLine) return;
+
+      // ১. Variable Assignment চেক করা (যেমন: a = 3 বা r = a + b)
+      const assignmentMatch = trimmedLine.match(/^([a-zA-Z_]\w*)\s*=\s*(.+)$/);
+      if (assignmentMatch) {
+        const varName = assignmentMatch[1];
+        let expression = assignmentMatch[2];
+
+        // এক্সপ্রেশনের ভেতরের ভেরিয়েবলগুলোকে তাদের মান দিয়ে রিপ্লেস করা
+        Object.keys(memory).forEach((key) => {
+          const regex = new RegExp(`\\b${key}\\b`, 'g');
+          expression = expression.replace(regex, memory[key]);
+        });
+
+        try {
+          // ম্যাথ ক্যালকুলেশন করা
+          // eslint-disable-next-line no-new-func
+          const result = new Function(`return ${expression}`)();
+          memory[varName] = result;
+        } catch (e) {
+          currentOutput += `Math Error in -> '${trimmedLine}'\n`;
         }
-      } else if (trimmedLine !== '') {
-        currentOutput += `Error: Unknown command -> '${trimmedLine}'\n`;
+        return;
       }
+
+      // ২. Show কমান্ড চেক করা
+      const showMatch = trimmedLine.match(/^show\s+(.+)$/i);
+      if (showMatch) {
+        const content = showMatch[1].trim();
+
+        // চেক করা এটি কি কোটেশনের ভেতর আছে ("String") নাকি ভেরিয়েবল?
+        const stringMatch = content.match(/^"([^"]*)"$/);
+        
+        if (stringMatch) {
+          // কোটেশনের ভেতর থাকলে হুবহু প্রিন্ট করবে
+          currentOutput += stringMatch[1] + '\n';
+        } else if (memory.hasOwnProperty(content)) {
+          // ভেরিয়েবল হলে তার মান (Value) প্রিন্ট করবে
+          currentOutput += memory[content] + '\n';
+        } else {
+          currentOutput += `Error: Undefined variable -> '${content}'\n`;
+        }
+        return;
+      }
+
+      // ৩. যদি উপরের কোনো রুল না মেলে
+      currentOutput += `Error: Unknown command -> '${trimmedLine}'\n`;
     });
 
-    // Update the terminal screen
     setOutput(currentOutput || 'No output.');
   };
 
@@ -80,7 +113,6 @@ export default function Home() {
           ▶ Run Code
         </button>
 
-        {/* NEW: Terminal Output Section */}
         <div style={{ maxWidth: '800px' }}>
           <label style={{ display: 'block', marginBottom: '10px', fontSize: '1.2rem', color: '#888' }}>Terminal Output</label>
           <div style={{
@@ -90,7 +122,7 @@ export default function Home() {
             border: '1px solid #30363d',
             borderRadius: '8px',
             minHeight: '120px',
-            whiteSpace: 'pre-wrap', // Keeps the line breaks
+            whiteSpace: 'pre-wrap',
             fontFamily: 'monospace'
           }}>
             {output}
