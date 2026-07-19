@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { OmFileIcon } from './Icons';
+import { FileIcon } from './Icons'; // আপডেট করা হয়েছে
 
 export default function Editor({ files, activeFileName, setActiveFileName, activeFile, renameActiveFile, updateCode, highlightCode }) {
   const textRef = useRef(null);
@@ -14,7 +14,6 @@ export default function Editor({ files, activeFileName, setActiveFileName, activ
 
   return (
     <div className="flex flex-1 flex-col min-w-0">
-      {/* Top Tabs */}
       <div className="flex bg-[#010409] border-b border-[#30363d] overflow-x-auto no-scrollbar">
         {files.map(file => (
           <div 
@@ -22,16 +21,15 @@ export default function Editor({ files, activeFileName, setActiveFileName, activ
             onClick={() => setActiveFileName(file.name)}
             className={`px-4 py-2 text-sm flex items-center gap-2 cursor-pointer font-mono whitespace-nowrap ${activeFileName === file.name ? 'bg-[#0d1117] border-t-2 border-[#58a6ff] text-[#c9d1d9]' : 'bg-[#010409] text-gray-500 hover:bg-[#0d1117] border-t-2 border-transparent'}`}
           >
-            <OmFileIcon />
+            <FileIcon fileName={file.name} /> {/* ডায়নামিক আইকন */}
             {file.name}
           </div>
         ))}
       </div>
 
-      {/* Rename File Input */}
       <div className="flex bg-[#010409] border-b border-[#30363d]">
         <div className="px-4 py-2 bg-[#0d1117] text-sm flex items-center gap-2">
-          <OmFileIcon />
+          <FileIcon fileName={activeFileName} /> {/* ডায়নামিক আইকন */}
           <input
             type="text"
             value={activeFileName}
@@ -42,7 +40,6 @@ export default function Editor({ files, activeFileName, setActiveFileName, activ
         </div>
       </div>
 
-      {/* Text Editor Area */}
       <div className="flex-1 flex bg-[#0d1117] overflow-hidden relative">
         <div className="w-12 bg-[#0d1117] border-r border-[#30363d] text-right pr-2 py-4 font-mono text-sm text-gray-600 select-none hidden sm:block">
           {activeFile.code.split('\n').map((_, i) => <div key={i}>{i + 1}</div>)}
@@ -68,4 +65,3 @@ export default function Editor({ files, activeFileName, setActiveFileName, activ
     </div>
   );
 }
-
