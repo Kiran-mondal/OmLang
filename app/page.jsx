@@ -7,9 +7,10 @@ import Editor from '../components/Editor';
 import Terminal from '../components/Terminal';
 
 export default function Home() {
+  // একদম পরিষ্কার এবং একটিমাত্র ডিফল্ট এক্সাম্পল ফাইল
   const [file, setFile] = useState({ 
     name: 'main.om', 
-    code: 'show "Hello Kiran!"\n\nmatrix M = [10, 20 | 30, 40]\nshow M' 
+    code: 'show "Hello World"' 
   });
   const [output, setOutput] = useState('');
   const [isSaving, setIsSaving] = useState(false);
@@ -33,7 +34,6 @@ export default function Home() {
   };
 
   const handleRun = () => {
-    // সেফটি চেক: Vercel বিল্ড এরর ঠেকানোর জন্য
     const safeName = file?.name || 'main.om';
     
     if (!safeName.toLowerCase().endsWith('.om')) {
@@ -44,7 +44,6 @@ export default function Home() {
     setOutput(`Compiling ${safeName}...\n\n` + result);
   };
 
-  // আসল Cloud Sync লজিক (Neon Database এর জন্য)
   const handleSave = async () => {
     setIsSaving(true);
     const safeName = file?.name || 'main.om';
@@ -85,7 +84,6 @@ export default function Home() {
         />
       </div>
       
-      {/* সেফটি চেক সহ টার্মিনাল রেন্ডার */}
       <Terminal fileName={file?.name || 'main.om'} output={output} />
     </div>
   );
