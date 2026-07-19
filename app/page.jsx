@@ -7,13 +7,42 @@ export default function Home() {
   const [code, setCode] = useState('// OmLang - High Performance Compilation\nmatrix M = [10, 20 | 30, 40]\n\nshow "Pipeline initialized..."\nshow M\n');
   const [output, setOutput] = useState('');
   const [activeTab, setActiveTab] = useState('terminal');
+  
+  // NEW: State to handle saving status
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleRun = () => {
     setActiveTab('terminal');
     const result = runOmLang(code);
-    
-    // Add a simulated compilation delay for a professional feel
     setOutput('Compiling OmLang source...\nOptimizing AST...\n\n' + result);
+  };
+
+  // NEW: Function to save code to Neon Database
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      const response = await fetch('/api/save-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: 'main.om',
+          code: code
+        })
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        setOutput(`\n--- CLOUD SYNC ---\n[Success] File 'main.om' saved to Neon Database at ${new Date().toLocaleTimeString()}\nSnippet ID: ${data.data.id}\n------------------\n\n` + output);
+        setActiveTab('terminal');
+      } else {
+        setOutput(`\n--- CLOUD SYNC ---\n[Error] ${data.error}\n------------------\n\n` + output);
+      }
+    } catch (error) {
+      setOutput(`\n--- CLOUD SYNC ---\n[Error] Network failure. Could not connect to database.\n------------------\n\n` + output);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -27,7 +56,18 @@ export default function Home() {
           <div className="h-3 w-3 rounded-full bg-green-500"></div>
           <span className="ml-4 font-semibold text-gray-300 tracking-wider">OmLang Studio</span>
         </div>
-        <div className="flex items-center gap-4">
+        
+        {/* NEW: Added Save Button to the Header */}
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={handleSave}
+            disabled={isSaving}
+            className="flex items-center gap-2 bg-[#21262d] hover:bg-[#30363d] text-[#c9d1d9] border border-[#363b42] px-4 py-1.5 rounded-md text-xs font-bold transition-all disabled:opacity-50"
+          >
+            <svg className="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
+            {isSaving ? 'Saving...' : 'Save to Cloud'}
+          </button>
+
           <button 
             onClick={handleRun}
             className="flex items-center gap-2 bg-[#238636] hover:bg-[#2ea043] text-white px-4 py-1.5 rounded-md text-xs font-bold transition-all shadow-sm"
@@ -38,7 +78,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main Workspace */}
+      {/* Main Workspace (Unchanged) */}
       <div className="flex flex-1 overflow-hidden">
         
         {/* Left Sidebar (Explorer) */}
@@ -58,9 +98,6 @@ export default function Home() {
                   <div className="flex items-center gap-2 px-2 py-1 text-sm bg-[#161b22] text-[#58a6ff] rounded border-l-2 border-[#58a6ff] cursor-pointer">
                     <span className="text-xs font-mono">om</span> main.om
                   </div>
-                  <div className="flex items-center gap-2 px-2 py-1 text-sm text-gray-400 hover:bg-[#161b22] rounded cursor-pointer">
-                    <span className="text-xs font-mono">om</span> utils.om
-                  </div>
                 </div>
               </details>
             </div>
@@ -70,14 +107,12 @@ export default function Home() {
         {/* Center Code Editor & Bottom Panels */}
         <div className="flex flex-1 flex-col min-w-0">
           
-          {/* Code Editor Header */}
           <div className="flex bg-[#010409] border-b border-[#30363d]">
             <div className="px-4 py-2 bg-[#0d1117] border-t-2 border-[#58a6ff] text-sm text-gray-200 flex items-center gap-2">
               <span className="text-[#58a6ff] font-mono text-xs">om</span> main.om
             </div>
           </div>
 
-          {/* Text Area / Editor */}
           <div className="flex-1 flex bg-[#0d1117] overflow-hidden relative">
             <div className="w-12 bg-[#0d1117] border-r border-[#30363d] text-right pr-2 py-4 font-mono text-sm text-gray-600 select-none hidden sm:block">
               {code.split('\n').map((_, i) => <div key={i}>{i + 1}</div>)}
@@ -90,7 +125,6 @@ export default function Home() {
             />
           </div>
 
-          {/* Bottom Panel (Terminal / Visualizer) */}
           <div className="h-64 bg-[#010409] border-t border-[#30363d] flex flex-col">
             <div className="flex px-4 border-b border-[#30363d] gap-6 text-xs uppercase tracking-wider font-semibold text-gray-500">
               <button 
@@ -122,7 +156,6 @@ export default function Home() {
               )}
             </div>
           </div>
-
         </div>
       </div>
     </div>
