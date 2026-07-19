@@ -9,7 +9,7 @@ This project brings a completely custom compiler engine to life with dynamic cli
 ## 🌍 Live Demo & Web IDE Link
 Anyone can write and compile code instantly without installing anything. Click the official public web link below to code directly in your browser:
 
-👉 **[Run OmLang Live on Vercel](https://omlang.vercel.app)**
+👉 **[Run OmLang Live on Vercel](https://omlang.quarry.dpdns.org/)**
 
 ---
 
