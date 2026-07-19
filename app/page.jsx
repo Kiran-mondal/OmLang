@@ -6,11 +6,9 @@ import { runOmLang } from '../lib/omlang/Engine';
 export default function Home() {
   const [code, setCode] = useState('show "Hlw Kiran"');
   const [output, setOutput] = useState('');
-  const [activeTab, setActiveTab] = useState('terminal');
   const [isSaving, setIsSaving] = useState(false);
 
   const handleRun = () => {
-    setActiveTab('terminal');
     const result = runOmLang(code);
     setOutput('Compiling OmLang source...\nOptimizing AST...\n\n' + result);
   };
@@ -30,8 +28,7 @@ export default function Home() {
       const data = await response.json();
       
       if (response.ok) {
-        setOutput(`\n--- CLOUD SYNC ---\n[Success] File 'main.om' saved to Neon Database at ${new Date().toLocaleTimeString()}\nSnippet ID: ${data.data.id}\n------------------\n\n` + output);
-        setActiveTab('terminal');
+        setOutput(`\n--- CLOUD SYNC ---\n[Success] File saved to Neon DB at ${new Date().toLocaleTimeString()}\nSnippet ID: ${data.data.id}\n------------------\n\n` + output);
       } else {
         setOutput(`\n--- CLOUD SYNC ---\n[Error] ${data.error}\n------------------\n\n` + output);
       }
@@ -46,30 +43,31 @@ export default function Home() {
     <div className="flex h-screen w-full flex-col bg-[#0d1117] text-[#c9d1d9] font-sans overflow-hidden selection:bg-[#1f6feb] selection:text-white">
       
       {/* Top Header Navigation */}
-      <header className="flex items-center justify-between bg-[#010409] px-4 py-2 border-b border-[#30363d] text-sm">
+      <header className="flex items-center justify-between bg-[#010409] px-4 py-3 border-b border-[#30363d] text-sm">
         <div className="flex items-center gap-3">
-          <div className="h-3 w-3 rounded-full bg-red-500"></div>
-          <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
-          <div className="h-3 w-3 rounded-full bg-green-500"></div>
-          <span className="ml-4 font-semibold text-gray-300 tracking-wider">OmLang Studio</span>
+          <div className="h-3 w-3 rounded-full bg-red-500 hidden sm:block"></div>
+          <div className="h-3 w-3 rounded-full bg-yellow-500 hidden sm:block"></div>
+          <div className="h-3 w-3 rounded-full bg-green-500 hidden sm:block"></div>
+          <span className="sm:ml-4 font-semibold text-gray-300 tracking-wider">OmLang Studio</span>
         </div>
         
-        <div className="flex items-center gap-3">
+        {/* Buttons: Added whitespace-nowrap and adjusted padding/text to fix mobile layout */}
+        <div className="flex items-center gap-2">
           <button 
             onClick={handleSave}
             disabled={isSaving}
-            className="flex items-center gap-2 bg-[#21262d] hover:bg-[#30363d] text-[#c9d1d9] border border-[#363b42] px-4 py-1.5 rounded-md text-xs font-bold transition-all disabled:opacity-50"
+            className="flex items-center gap-2 bg-[#21262d] hover:bg-[#30363d] text-[#c9d1d9] border border-[#363b42] px-3 py-1.5 rounded-md text-xs font-bold transition-all disabled:opacity-50 whitespace-nowrap"
           >
-            <svg className="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
-            {isSaving ? 'Saving...' : 'Save to Cloud'}
+            <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
+            {isSaving ? 'Saving...' : 'Sync Cloud'}
           </button>
 
           <button 
             onClick={handleRun}
-            className="flex items-center gap-2 bg-[#238636] hover:bg-[#2ea043] text-white px-4 py-1.5 rounded-md text-xs font-bold transition-all shadow-sm"
+            className="flex items-center gap-2 bg-[#238636] hover:bg-[#2ea043] text-white px-3 py-1.5 rounded-md text-xs font-bold transition-all shadow-sm whitespace-nowrap"
           >
-            <svg className="w-3 h-3 fill-current" viewBox="0 0 16 16"><path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>
-            Simulate Compile
+            <svg className="w-4 h-4 fill-current" viewBox="0 0 16 16"><path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>
+            Run Code
           </button>
         </div>
       </header>
@@ -100,7 +98,7 @@ export default function Home() {
           </div>
         </aside>
 
-        {/* Center Code Editor & Bottom Panels */}
+        {/* Center Code Editor & Bottom Terminal */}
         <div className="flex flex-1 flex-col min-w-0">
           
           <div className="flex bg-[#010409] border-b border-[#30363d]">
@@ -121,35 +119,19 @@ export default function Home() {
             />
           </div>
 
+          {/* Terminal Section (Profiler removed for clean UI) */}
           <div className="h-64 bg-[#010409] border-t border-[#30363d] flex flex-col">
             <div className="flex px-4 border-b border-[#30363d] gap-6 text-xs uppercase tracking-wider font-semibold text-gray-500">
-              <button 
-                onClick={() => setActiveTab('terminal')}
-                className={`py-3 outline-none ${activeTab === 'terminal' ? 'text-[#e6edf3] border-b-2 border-[#58a6ff]' : 'hover:text-gray-300'}`}
-              >
-                Terminal
-              </button>
-              <button 
-                onClick={() => setActiveTab('visualizer')}
-                className={`py-3 outline-none ${activeTab === 'visualizer' ? 'text-[#e6edf3] border-b-2 border-[#58a6ff]' : 'hover:text-gray-300'}`}
-              >
-                Compilation Profiler
-              </button>
+              <div className="py-3 text-[#e6edf3] border-b-2 border-[#58a6ff]">
+                Terminal Output
+              </div>
             </div>
             
             <div className="flex-1 overflow-y-auto p-4 font-mono text-sm">
-              {activeTab === 'terminal' && (
-                <div className="text-[#a5d6ff] whitespace-pre-wrap">
-                  <span className="text-[#4ade80]">volt@desktop</span>:<span className="text-[#58a6ff]">~/omlang</span>$ om compile --release{'\n'}
-                  {output || 'Awaiting execution...'}
-                </div>
-              )}
-              {activeTab === 'visualizer' && (
-                <div className="flex flex-col items-center justify-center h-full text-gray-500 gap-4">
-                  <svg className="w-12 h-12 text-[#30363d]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" /></svg>
-                  <p>Run the code to visualize the AST pipeline.</p>
-                </div>
-              )}
+              <div className="text-[#a5d6ff] whitespace-pre-wrap">
+                <span className="text-[#4ade80]">volt@desktop</span>:<span className="text-[#58a6ff]">~/omlang</span>$ om compile --release{'\n'}
+                {output || 'Awaiting execution...'}
+              </div>
             </div>
           </div>
         </div>
