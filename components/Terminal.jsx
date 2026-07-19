@@ -1,4 +1,4 @@
-export default function Terminal({ activeFileName, output }) {
+export default function Terminal({ fileName, output }) {
   return (
     <div className="h-64 bg-[#010409] border-t border-[#30363d] flex flex-col">
       <div className="flex px-4 border-b border-[#30363d]">
@@ -9,7 +9,7 @@ export default function Terminal({ activeFileName, output }) {
       
       <div className="flex-1 overflow-y-auto p-4 font-mono text-sm">
         <div className="text-[#a5d6ff] whitespace-pre-wrap">
-          <span className="text-[#4ade80]">volt@desktop</span>:<span className="text-[#58a6ff]">~/omlang</span>$ om compile {activeFileName} --release{'\n'}
+          <span className="text-[#4ade80]">volt@desktop</span>:<span className="text-[#58a6ff]">~/omlang</span>$ om compile {fileName} --release{'\n'}
           {output || 'Awaiting execution...'}
         </div>
       </div>
