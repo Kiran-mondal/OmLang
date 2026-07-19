@@ -1,0 +1,16 @@
+{
+  "name": "omlang-web",
+  "version": "1.0.0",
+  "description": "Official Web Platform for OmLang",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "@neondatabase/serverless": "latest"
+  }
+}
