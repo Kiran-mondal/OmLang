@@ -1,71 +1,34 @@
 'use client';
 
 import { useState } from 'react';
+import { runOmLang } from '../lib/omlang/Engine'; // Importing the core engine
 
 export default function Home() {
-  // আমি ডিফল্ট কোডটি আপনার ম্যাথ লজিক দিয়ে আপডেট করে দিয়েছি
-  const [code, setCode] = useState('a = 3\nb = 2\nr = a + b\nshow r');
+  // Default code showing Intermediate Features (Variables, Math, Symbols, Conditions, Matrix)
+  const defaultCode = `// OmLang Basic to Intermediate Test
+a = 15
+b = 10
+
+// Math and Logic using standard symbols
+if a > b {
+    show "A is greater than B"
+}
+else {
+    show "B is greater or equal"
+}
+
+// Matrix Declaration
+matrix M = [10, 20 | 30, 40]
+show M
+`;
+
+  const [code, setCode] = useState(defaultCode);
   const [output, setOutput] = useState('');
 
   const handleRun = () => {
-    const lines = code.split('\n');
-    let currentOutput = '';
-    
-    // এটি OmLang-এর র‍্যাম (RAM) বা মেমোরি হিসেবে কাজ করবে
-    let memory = {}; 
-
-    lines.forEach((line) => {
-      const trimmedLine = line.trim();
-      if (!trimmedLine) return;
-
-      // ১. Variable Assignment চেক করা (যেমন: a = 3 বা r = a + b)
-      const assignmentMatch = trimmedLine.match(/^([a-zA-Z_]\w*)\s*=\s*(.+)$/);
-      if (assignmentMatch) {
-        const varName = assignmentMatch[1];
-        let expression = assignmentMatch[2];
-
-        // এক্সপ্রেশনের ভেতরের ভেরিয়েবলগুলোকে তাদের মান দিয়ে রিপ্লেস করা
-        Object.keys(memory).forEach((key) => {
-          const regex = new RegExp(`\\b${key}\\b`, 'g');
-          expression = expression.replace(regex, memory[key]);
-        });
-
-        try {
-          // ম্যাথ ক্যালকুলেশন করা
-          // eslint-disable-next-line no-new-func
-          const result = new Function(`return ${expression}`)();
-          memory[varName] = result;
-        } catch (e) {
-          currentOutput += `Math Error in -> '${trimmedLine}'\n`;
-        }
-        return;
-      }
-
-      // ২. Show কমান্ড চেক করা
-      const showMatch = trimmedLine.match(/^show\s+(.+)$/i);
-      if (showMatch) {
-        const content = showMatch[1].trim();
-
-        // চেক করা এটি কি কোটেশনের ভেতর আছে ("String") নাকি ভেরিয়েবল?
-        const stringMatch = content.match(/^"([^"]*)"$/);
-        
-        if (stringMatch) {
-          // কোটেশনের ভেতর থাকলে হুবহু প্রিন্ট করবে
-          currentOutput += stringMatch[1] + '\n';
-        } else if (memory.hasOwnProperty(content)) {
-          // ভেরিয়েবল হলে তার মান (Value) প্রিন্ট করবে
-          currentOutput += memory[content] + '\n';
-        } else {
-          currentOutput += `Error: Undefined variable -> '${content}'\n`;
-        }
-        return;
-      }
-
-      // ৩. যদি উপরের কোনো রুল না মেলে
-      currentOutput += `Error: Unknown command -> '${trimmedLine}'\n`;
-    });
-
-    setOutput(currentOutput || 'No output.');
+    // Calling the external Engine to process the code
+    const result = runOmLang(code);
+    setOutput(result);
   };
 
   return (
@@ -81,7 +44,7 @@ export default function Home() {
           <textarea
             value={code}
             onChange={(e) => setCode(e.target.value)}
-            rows="8"
+            rows="15"
             style={{
               width: '100%',
               maxWidth: '800px',
@@ -91,7 +54,8 @@ export default function Home() {
               border: '1px solid #333',
               borderRadius: '8px',
               fontSize: '16px',
-              outline: 'none'
+              outline: 'none',
+              resize: 'vertical'
             }}
           />
         </div>
