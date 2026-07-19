@@ -1,24 +1,50 @@
 import { FileIcon } from './Icons';
 
-export default function Editor({ file, renameFile, updateCode, highlightCode }) {
-  // Safety Check: যদি কোনো কারণে file বা file.code না থাকে, তবে খালি স্ট্রিং ধরে নেবে
-  const safeCode = file?.code || '';
+export default function Editor({ files, activeIndex, setActiveIndex, addNewFile, renameFile, updateCode, highlightCode }) {
+  const activeFile = files[activeIndex] || files[0];
+  const safeCode = activeFile?.code || '';
+  const safeName = activeFile?.name || 'main.om';
 
   return (
     <div className="flex flex-1 flex-col min-w-0">
-      {/* ফাইল রিনেম বক্স */}
-      <div className="flex bg-[#010409] border-b border-[#30363d] px-4 py-2 items-center gap-2">
-        <FileIcon fileName={file?.name || 'main.om'} />
+      
+      {/* VS Code Style Tab Bar with '+' Icon */}
+      <div className="flex bg-[#010409] border-b border-[#30363d] overflow-x-auto no-scrollbar items-center">
+        {files.map((file, index) => (
+          <div 
+            key={index}
+            onClick={() => setActiveIndex(index)}
+            className={`px-4 py-2 text-sm flex items-center gap-2 cursor-pointer font-mono whitespace-nowrap ${activeIndex === index ? 'bg-[#0d1117] border-t-2 border-[#58a6ff] text-[#c9d1d9]' : 'text-gray-500 hover:bg-[#0d1117] border-t-2 border-transparent'}`}
+          >
+            <FileIcon fileName={file.name} />
+            {file.name}
+          </div>
+        ))}
+        {/* New File (+) Button */}
+        <button 
+          onClick={addNewFile} 
+          className="ml-2 p-1 text-gray-500 hover:text-[#4ade80] transition-colors flex items-center justify-center" 
+          title="Create New File"
+        >
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+        </button>
+      </div>
+
+      {/* File Rename Input */}
+      <div className="flex bg-[#0d1117] border-b border-[#30363d] px-4 py-2 items-center gap-2">
+        <FileIcon fileName={safeName} />
         <input
           type="text"
-          value={file?.name || ''}
-          onChange={(e) => renameFile(e.target.value)}
+          value={safeName}
+          onChange={(e) => renameFile(activeIndex, e.target.value)}
           className="bg-transparent border-none outline-none text-[#58a6ff] font-mono text-sm w-full focus:ring-0"
+          placeholder="filename.om"
         />
       </div>
 
       <div className="flex-1 relative overflow-hidden">
-        {/* লাইন নম্বর জেনারেটর - safeCode ব্যবহার করে ডিফেন্ড করা হয়েছে */}
         <div className="absolute left-0 top-0 bottom-0 w-12 bg-[#0d1117] border-r border-[#30363d] text-right pr-2 py-4 font-mono text-sm text-gray-600 select-none hidden sm:block">
           {safeCode.split('\n').map((_, i) => <div key={i}>{i + 1}</div>)}
         </div>
