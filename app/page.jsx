@@ -7,20 +7,31 @@ import Editor from '../components/Editor';
 import Terminal from '../components/Terminal';
 
 export default function Home() {
-  // একদম পরিষ্কার এবং একটিমাত্র ডিফল্ট এক্সাম্পল ফাইল
-  const [file, setFile] = useState({ 
-    name: 'main.om', 
-    code: 'show "Hello World"' 
-  });
+  // ডিফল্টভাবে একটি ফাইল থাকবে
+  const [files, setFiles] = useState([{ name: 'main.om', code: 'show "Hello World"' }]);
+  const [activeIndex, setActiveIndex] = useState(0);
+  
   const [output, setOutput] = useState('');
   const [isSaving, setIsSaving] = useState(false);
 
+  const activeFile = files[activeIndex] || files[0];
+
   const updateCode = (newCode) => {
-    setFile(prev => ({ ...prev, code: newCode }));
+    const updatedFiles = [...files];
+    updatedFiles[activeIndex].code = newCode;
+    setFiles(updatedFiles);
   };
 
-  const renameFile = (newName) => {
-    setFile(prev => ({ ...prev, name: newName }));
+  const renameFile = (index, newName) => {
+    const updatedFiles = [...files];
+    updatedFiles[index].name = newName;
+    setFiles(updatedFiles);
+  };
+
+  const addNewFile = () => {
+    const newFileName = `test${files.length + 1}.om`;
+    setFiles([...files, { name: newFileName, code: '' }]);
+    setActiveIndex(files.length); // নতুন ফাইলে ফোকাস করবে
   };
 
   const highlightCode = (code) => {
@@ -34,33 +45,31 @@ export default function Home() {
   };
 
   const handleRun = () => {
-    const safeName = file?.name || 'main.om';
+    const safeName = activeFile?.name || 'main.om';
     
+    // Strict Language Lock: .om ছাড়া কোনো ফাইল রান করবে না
     if (!safeName.toLowerCase().endsWith('.om')) {
-      setOutput(`[Error] Execution Failed!\nOnly '.om' files are supported by the OmLang Compiler.`);
+      setOutput(`[Security Alert] Execution Blocked!\nThe OmLang Engine is strictly locked to run only '.om' language files.\nFile '${safeName}' is not supported.`);
       return;
     }
-    const result = runOmLang(file?.code || '');
+    const result = runOmLang(activeFile?.code || '');
     setOutput(`Compiling ${safeName}...\n\n` + result);
   };
 
   const handleSave = async () => {
     setIsSaving(true);
-    const safeName = file?.name || 'main.om';
-    const safeCode = file?.code || '';
+    const safeName = activeFile?.name || 'main.om';
+    const safeCode = activeFile?.code || '';
 
     try {
       const response = await fetch('/api/save-code', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: safeName,
-          code: safeCode
-        })
+        body: JSON.stringify({ title: safeName, code: safeCode })
       });
       const data = await response.json();
       if (response.ok) {
-        setOutput(`\n--- CLOUD SYNC ---\n[Success] '${safeName}' saved to Neon DB at ${new Date().toLocaleTimeString()}\nSnippet ID: ${data.data?.id || 'N/A'}\n------------------\n\n` + output);
+        setOutput(`\n--- CLOUD SYNC ---\n[Success] '${safeName}' saved to Neon DB\nSnippet ID: ${data.data?.id || 'N/A'}\n------------------\n\n` + output);
       } else {
         setOutput(`\n--- CLOUD SYNC ---\n[Error] ${data.error}\n------------------\n\n` + output);
       }
@@ -77,14 +86,17 @@ export default function Home() {
       
       <div className="flex flex-1 overflow-hidden">
         <Editor 
-          file={file} 
+          files={files} 
+          activeIndex={activeIndex}
+          setActiveIndex={setActiveIndex}
+          addNewFile={addNewFile}
           renameFile={renameFile} 
           updateCode={updateCode} 
           highlightCode={highlightCode} 
         />
       </div>
       
-      <Terminal fileName={file?.name || 'main.om'} output={output} />
+      <Terminal fileName={activeFile?.name || 'main.om'} output={output} />
     </div>
   );
 }
