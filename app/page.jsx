@@ -4,106 +4,127 @@ import { useState } from 'react';
 import { runOmLang } from '../lib/omlang/Engine';
 
 export default function Home() {
-  // ১. শুধুমাত্র সাধারণ একটি টেস্ট কোড রাখা হলো
-  const [code, setCode] = useState('show "Hello OmLang!"');
+  const [code, setCode] = useState('// OmLang - High Performance Compilation\nmatrix M = [10, 20 | 30, 40]\n\nshow "Pipeline initialized..."\nshow M\n');
   const [output, setOutput] = useState('');
+  const [activeTab, setActiveTab] = useState('terminal');
 
   const handleRun = () => {
+    setActiveTab('terminal');
     const result = runOmLang(code);
-    setOutput(result);
+    
+    // Add a simulated compilation delay for a professional feel
+    setOutput('Compiling OmLang source...\nOptimizing AST...\n\n' + result);
   };
 
   return (
-    <>
-      {/* ২. গ্লোবাল CSS: এটি ব্রাউজারের চারপাশের সাদা বর্ডার বা মার্জিন পুরোপুরি মুছে ফেলবে */}
-      <style jsx global>{`
-        html, body {
-          margin: 0;
-          padding: 0;
-          background-color: #121212; /* পুরো ব্যাকগ্রাউন্ড সম্পূর্ণ কালো */
-          height: 100vh;
-          overflow: hidden; /* মূল পেজের বাড়তি স্ক্রলিং পুরোপুরি বন্ধ */
-        }
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
-
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: '#121212', color: '#fff', fontFamily: 'monospace' }}>
-        
-        {/* ৩. Header & Run Button */}
-        <header style={{ padding: '1rem 1.5rem', backgroundColor: '#1a1a1a', borderBottom: '1px solid #333', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div>
-            <h1 style={{ margin: 0, color: '#4ade80', fontSize: '1.5rem' }}>OmLang Web IDE</h1>
-            <p style={{ color: '#888', margin: '2px 0 0 0', fontSize: '0.8rem' }}>Write Once, Run Anywhere</p>
-          </div>
+    <div className="flex h-screen w-full flex-col bg-[#0d1117] text-[#c9d1d9] font-sans overflow-hidden selection:bg-[#1f6feb] selection:text-white">
+      
+      {/* Top Header Navigation */}
+      <header className="flex items-center justify-between bg-[#010409] px-4 py-2 border-b border-[#30363d] text-sm">
+        <div className="flex items-center gap-3">
+          <div className="h-3 w-3 rounded-full bg-red-500"></div>
+          <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
+          <div className="h-3 w-3 rounded-full bg-green-500"></div>
+          <span className="ml-4 font-semibold text-gray-300 tracking-wider">OmLang Studio</span>
+        </div>
+        <div className="flex items-center gap-4">
           <button 
             onClick={handleRun}
-            style={{
-              backgroundColor: '#4ade80',
-              color: '#000',
-              padding: '10px 24px',
-              fontSize: '15px',
-              fontWeight: 'bold',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              boxShadow: '0 4px 6px rgba(0,0,0,0.3)'
-            }}
+            className="flex items-center gap-2 bg-[#238636] hover:bg-[#2ea043] text-white px-4 py-1.5 rounded-md text-xs font-bold transition-all shadow-sm"
           >
-            ▶ Run Code
+            <svg className="w-3 h-3 fill-current" viewBox="0 0 16 16"><path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>
+            Simulate Compile
           </button>
-        </header>
+        </div>
+      </header>
 
-        {/* ৪. Main Workspace (Responsive Flexbox) */}
-        <main style={{ display: 'flex', flexWrap: 'wrap', flex: 1, overflow: 'hidden' }}>
+      {/* Main Workspace */}
+      <div className="flex flex-1 overflow-hidden">
+        
+        {/* Left Sidebar (Explorer) */}
+        <aside className="w-64 bg-[#010409] border-r border-[#30363d] flex flex-col hidden md:flex">
+          <div className="px-4 py-3 text-xs font-bold text-gray-400 tracking-widest uppercase">
+            Explorer
+          </div>
+          <div className="flex-1 overflow-y-auto">
+            <div className="px-2">
+              <details className="group" open>
+                <summary className="flex items-center gap-2 px-2 py-1 text-sm cursor-pointer hover:bg-[#161b22] rounded text-gray-300">
+                  <svg className="w-4 h-4 text-gray-500 transition-transform group-open:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                  <svg className="w-4 h-4 text-[#4ade80]" fill="currentColor" viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
+                  omlang-project
+                </summary>
+                <div className="pl-6 mt-1 flex flex-col gap-1">
+                  <div className="flex items-center gap-2 px-2 py-1 text-sm bg-[#161b22] text-[#58a6ff] rounded border-l-2 border-[#58a6ff] cursor-pointer">
+                    <span className="text-xs font-mono">om</span> main.om
+                  </div>
+                  <div className="flex items-center gap-2 px-2 py-1 text-sm text-gray-400 hover:bg-[#161b22] rounded cursor-pointer">
+                    <span className="text-xs font-mono">om</span> utils.om
+                  </div>
+                </div>
+              </details>
+            </div>
+          </div>
+        </aside>
+
+        {/* Center Code Editor & Bottom Panels */}
+        <div className="flex flex-1 flex-col min-w-0">
           
-          {/* কোড লেখার জায়গা (Editor) */}
-          <div style={{ flex: '1 1 50%', display: 'flex', flexDirection: 'column', borderRight: '1px solid #333', borderBottom: '1px solid #333' }}>
-            <div style={{ padding: '8px 15px', backgroundColor: '#1a1a1a', color: '#888', fontSize: '0.9rem', borderBottom: '1px solid #333' }}>
-              Code Editor
+          {/* Code Editor Header */}
+          <div className="flex bg-[#010409] border-b border-[#30363d]">
+            <div className="px-4 py-2 bg-[#0d1117] border-t-2 border-[#58a6ff] text-sm text-gray-200 flex items-center gap-2">
+              <span className="text-[#58a6ff] font-mono text-xs">om</span> main.om
+            </div>
+          </div>
+
+          {/* Text Area / Editor */}
+          <div className="flex-1 flex bg-[#0d1117] overflow-hidden relative">
+            <div className="w-12 bg-[#0d1117] border-r border-[#30363d] text-right pr-2 py-4 font-mono text-sm text-gray-600 select-none hidden sm:block">
+              {code.split('\n').map((_, i) => <div key={i}>{i + 1}</div>)}
             </div>
             <textarea
               value={code}
               onChange={(e) => setCode(e.target.value)}
               spellCheck="false"
-              style={{
-                flex: 1,
-                width: '100%',
-                backgroundColor: '#000',
-                color: '#4ade80',
-                padding: '15px',
-                border: 'none',
-                fontSize: '16px',
-                outline: 'none',
-                resize: 'none', // ইউজার যাতে বক্স টেনে বড়/ছোট করে লেআউট নষ্ট না করে
-                fontFamily: 'monospace',
-                overflowY: 'auto' // শুধুমাত্র কোড বড় হলে ভেতরে স্ক্রল হবে
-              }}
+              className="flex-1 bg-transparent text-[#e6edf3] font-mono text-[15px] leading-relaxed p-4 resize-none outline-none focus:ring-0 whitespace-pre"
             />
           </div>
 
-          {/* আউটপুট দেখার জায়গা (Terminal) */}
-          <div style={{ flex: '1 1 50%', display: 'flex', flexDirection: 'column', backgroundColor: '#0d1117' }}>
-            <div style={{ padding: '8px 15px', backgroundColor: '#1a1a1a', color: '#888', fontSize: '0.9rem', borderBottom: '1px solid #333' }}>
-              Terminal Output
+          {/* Bottom Panel (Terminal / Visualizer) */}
+          <div className="h-64 bg-[#010409] border-t border-[#30363d] flex flex-col">
+            <div className="flex px-4 border-b border-[#30363d] gap-6 text-xs uppercase tracking-wider font-semibold text-gray-500">
+              <button 
+                onClick={() => setActiveTab('terminal')}
+                className={`py-3 outline-none ${activeTab === 'terminal' ? 'text-[#e6edf3] border-b-2 border-[#58a6ff]' : 'hover:text-gray-300'}`}
+              >
+                Terminal
+              </button>
+              <button 
+                onClick={() => setActiveTab('visualizer')}
+                className={`py-3 outline-none ${activeTab === 'visualizer' ? 'text-[#e6edf3] border-b-2 border-[#58a6ff]' : 'hover:text-gray-300'}`}
+              >
+                Compilation Profiler
+              </button>
             </div>
-            <div style={{
-              flex: 1,
-              padding: '15px',
-              color: '#e6edf3',
-              overflowY: 'auto', // শুধুমাত্র আউটপুট বড় হলে ভেতরে স্ক্রল হবে
-              whiteSpace: 'pre-wrap',
-              fontSize: '15px'
-            }}>
-              {output || '> Ready to compile...'}
+            
+            <div className="flex-1 overflow-y-auto p-4 font-mono text-sm">
+              {activeTab === 'terminal' && (
+                <div className="text-[#a5d6ff] whitespace-pre-wrap">
+                  <span className="text-[#4ade80]">volt@desktop</span>:<span className="text-[#58a6ff]">~/omlang</span>$ om compile --release{'\n'}
+                  {output || 'Awaiting execution...'}
+                </div>
+              )}
+              {activeTab === 'visualizer' && (
+                <div className="flex flex-col items-center justify-center h-full text-gray-500 gap-4">
+                  <svg className="w-12 h-12 text-[#30363d]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" /></svg>
+                  <p>Run the code to visualize the AST pipeline.</p>
+                </div>
+              )}
             </div>
           </div>
 
-        </main>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
