@@ -4,11 +4,9 @@ import { useState } from 'react';
 import { runOmLang } from '../lib/omlang/Engine';
 
 export default function Home() {
-  const [code, setCode] = useState('// OmLang - High Performance Compilation\nmatrix M = [10, 20 | 30, 40]\n\nshow "Pipeline initialized..."\nshow M\n');
+  const [code, setCode] = useState('show "Hlw Kiran"');
   const [output, setOutput] = useState('');
   const [activeTab, setActiveTab] = useState('terminal');
-  
-  // NEW: State to handle saving status
   const [isSaving, setIsSaving] = useState(false);
 
   const handleRun = () => {
@@ -17,7 +15,6 @@ export default function Home() {
     setOutput('Compiling OmLang source...\nOptimizing AST...\n\n' + result);
   };
 
-  // NEW: Function to save code to Neon Database
   const handleSave = async () => {
     setIsSaving(true);
     try {
@@ -57,7 +54,6 @@ export default function Home() {
           <span className="ml-4 font-semibold text-gray-300 tracking-wider">OmLang Studio</span>
         </div>
         
-        {/* NEW: Added Save Button to the Header */}
         <div className="flex items-center gap-3">
           <button 
             onClick={handleSave}
@@ -78,10 +74,10 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main Workspace (Unchanged) */}
+      {/* Main Workspace */}
       <div className="flex flex-1 overflow-hidden">
         
-        {/* Left Sidebar (Explorer) */}
+        {/* Left Sidebar */}
         <aside className="w-64 bg-[#010409] border-r border-[#30363d] flex flex-col hidden md:flex">
           <div className="px-4 py-3 text-xs font-bold text-gray-400 tracking-widest uppercase">
             Explorer
@@ -96,7 +92,7 @@ export default function Home() {
                 </summary>
                 <div className="pl-6 mt-1 flex flex-col gap-1">
                   <div className="flex items-center gap-2 px-2 py-1 text-sm bg-[#161b22] text-[#58a6ff] rounded border-l-2 border-[#58a6ff] cursor-pointer">
-                    <span className="text-xs font-mono">om</span> main.om
+                    main.om
                   </div>
                 </div>
               </details>
@@ -109,7 +105,7 @@ export default function Home() {
           
           <div className="flex bg-[#010409] border-b border-[#30363d]">
             <div className="px-4 py-2 bg-[#0d1117] border-t-2 border-[#58a6ff] text-sm text-gray-200 flex items-center gap-2">
-              <span className="text-[#58a6ff] font-mono text-xs">om</span> main.om
+              main.om
             </div>
           </div>
 
