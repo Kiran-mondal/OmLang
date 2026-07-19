@@ -7,8 +7,7 @@ import Editor from '../components/Editor';
 import Terminal from '../components/Terminal';
 
 export default function Home() {
-  // ডিফল্টভাবে একটি ফাইল থাকবে
-  const [files, setFiles] = useState([{ name: 'main.om', code: 'show "Hello World"' }]);
+  const [files, setFiles] = useState([{ name: 'main.om', code: 'show "Hello World"\nfor x = 1 to 3 {\n  show "OmLang " + x\n}' }]);
   const [activeIndex, setActiveIndex] = useState(0);
   
   const [output, setOutput] = useState('');
@@ -31,7 +30,7 @@ export default function Home() {
   const addNewFile = () => {
     const newFileName = `test${files.length + 1}.om`;
     setFiles([...files, { name: newFileName, code: '' }]);
-    setActiveIndex(files.length); // নতুন ফাইলে ফোকাস করবে
+    setActiveIndex(files.length);
   };
 
   const highlightCode = (code) => {
@@ -47,7 +46,6 @@ export default function Home() {
   const handleRun = () => {
     const safeName = activeFile?.name || 'main.om';
     
-    // Strict Language Lock: .om ছাড়া কোনো ফাইল রান করবে না
     if (!safeName.toLowerCase().endsWith('.om')) {
       setOutput(`[Security Alert] Execution Blocked!\nThe OmLang Engine is strictly locked to run only '.om' language files.\nFile '${safeName}' is not supported.`);
       return;
@@ -81,7 +79,8 @@ export default function Home() {
   };
 
   return (
-    <div className="flex h-screen w-full flex-col bg-[#0d1117] text-[#c9d1d9] font-sans overflow-hidden">
+    // h-screen এর বদলে h-[100dvh] ব্যবহার করা হয়েছে (মোবাইল ফিক্স)
+    <div className="flex h-[100dvh] w-full flex-col bg-[#0d1117] text-[#c9d1d9] font-sans overflow-hidden">
       <Header handleSave={handleSave} isSaving={isSaving} handleRun={handleRun} />
       
       <div className="flex flex-1 overflow-hidden">
