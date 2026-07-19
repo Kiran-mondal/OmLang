@@ -1,4 +1,4 @@
-import { OmFileIcon } from './Icons';
+import { FileIcon } from './Icons'; // আপডেট করা হয়েছে
 
 export default function Sidebar({ files, activeFileName, setActiveFileName, addNewFile }) {
   return (
@@ -16,7 +16,7 @@ export default function Sidebar({ files, activeFileName, setActiveFileName, addN
             onClick={() => setActiveFileName(file.name)}
             className={`flex items-center gap-2 px-3 py-1.5 text-sm cursor-pointer rounded mb-1 font-mono ${activeFileName === file.name ? 'bg-[#161b22] text-[#58a6ff] border-l-2 border-[#58a6ff]' : 'text-gray-400 hover:bg-[#161b22] hover:text-gray-300 border-l-2 border-transparent'}`}
           >
-            <OmFileIcon />
+            <FileIcon fileName={file.name} /> {/* ডায়নামিক আইকন */}
             {file.name}
           </div>
         ))}
@@ -24,4 +24,3 @@ export default function Sidebar({ files, activeFileName, setActiveFileName, addN
     </aside>
   );
 }
-
