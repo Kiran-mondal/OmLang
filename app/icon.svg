@@ -1,28 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="100%" height="100%">
+  <!-- গ্লো ইফেক্ট এবং কালার গ্রেডিয়েন্ট তৈরি করা হচ্ছে -->
   <defs>
-    <linearGradient id="stringBlue" x1="0%" y1="100%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#A5D6FF" />
-      <stop offset="100%" stop-color="#58A6FF" />
-    </linearGradient>
-    <linearGradient id="keywordPink" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FF7B72" />
-      <stop offset="100%" stop-color="#D25555" />
+    <filter id="neonGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    
+    <linearGradient id="cyberGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f2fe" />
+      <stop offset="100%" stop-color="#4facfe" />
     </linearGradient>
   </defs>
-  
-  <!-- App Icon Background -->
-  <rect width="64" height="64" rx="14" fill="#010409" />
-  
-  <!-- The execution 'O' Ring -->
-  <circle cx="32" cy="32" r="22" fill="none" stroke="url(#stringBlue)" stroke-width="5" stroke-dasharray="50 15" stroke-linecap="round" />
-  
-  <!-- The 'M' Graph Path -->
-  <path d="M 19 39 L 26 23 L 32 32 L 38 23 L 45 39" fill="none" stroke="#E6EDF3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-  
-  <!-- Connection Nodes -->
-  <circle cx="19" cy="39" r="3.5" fill="url(#keywordPink)" />
-  <circle cx="26" cy="23" r="3.5" fill="url(#keywordPink)" />
-  <circle cx="32" cy="32" r="3.5" fill="url(#keywordPink)" />
-  <circle cx="38" cy="23" r="3.5" fill="url(#keywordPink)" />
-  <circle cx="45" cy="39" r="3.5" fill="url(#keywordPink)" />
+
+  <!-- ডার্ক থিম ব্যাকগ্রাউন্ড (আপনি চাইলে এটি মুছে ট্রান্সপারেন্ট করতে পারেন) -->
+  <rect width="100%" height="100%" fill="#0d1117" rx="150" />
+
+  <!-- The Matrix Om লোগোর মূল ড্রয়িং -->
+  <g stroke="url(#cyberGradient)" stroke-width="28" fill="none" filter="url(#neonGlow)" stroke-linecap="round" stroke-linejoin="round">
+
+    <!-- বাঁদিকের '3' এর মতো অংশ (যা কোডিংয়ের Curly Bracket '{' এর মতো ডিজাইন করা) -->
+    <path d="M 280 250 C 420 250, 420 380, 350 400 C 450 420, 450 580, 280 580" />
+    
+    <!-- ব্র্যাকেটের মাঝখানের তীক্ষ্ণ পয়েন্ট -->
+    <path d="M 220 400 L 280 400" /> 
+
+    <!-- ডানদিকের লেজ (যা ম্যাট্রিক্সের Pipe '|' এবং Array Bracket ']' দিয়ে তৈরি) -->
+    <path d="M 350 400 Q 520 400, 550 500 L 550 580" />
+    <path d="M 480 580 L 580 580" /> 
+
+    <!-- ওপরের চন্দ্রবিন্দু (Parenthesis '(' কে ঘুরিয়ে দেওয়া হয়েছে) -->
+    <path d="M 400 200 Q 450 240, 500 200" />
+
+    <!-- লোগোর ওপরের বিন্দু বা ডট (Matrix Node) -->
+    <circle cx="450" cy="120" r="22" fill="url(#cyberGradient)" stroke="none" />
+
+  </g>
 </svg>
