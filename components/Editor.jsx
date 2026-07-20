@@ -6,11 +6,9 @@ export default function Editor({ files, activeIndex, setActiveIndex, addNewFile,
   const safeCode = activeFile?.code || '';
   const safeName = activeFile?.name || 'main.om';
 
-  // লেয়ারগুলোকে সিঙ্ক করার জন্য রেফারেন্স
   const preRef = useRef(null);
   const lineRef = useRef(null);
 
-  // ইউজার যখন স্ক্রল করবে, তখন কালার লেয়ার এবং লাইন নাম্বার একসাথে স্ক্রল হবে
   const handleScroll = (e) => {
     if (preRef.current) {
       preRef.current.scrollTop = e.target.scrollTop;
@@ -23,8 +21,6 @@ export default function Editor({ files, activeIndex, setActiveIndex, addNewFile,
 
   return (
     <div className="flex flex-1 flex-col min-w-0 h-full">
-      
-      {/* Tab Bar with '+' Icon */}
       <div className="flex bg-[#010409] border-b border-[#30363d] overflow-x-auto no-scrollbar items-center shrink-0">
         {files.map((file, index) => (
           <div 
@@ -47,7 +43,6 @@ export default function Editor({ files, activeIndex, setActiveIndex, addNewFile,
         </button>
       </div>
 
-      {/* File Rename Input */}
       <div className="flex bg-[#0d1117] border-b border-[#30363d] px-4 py-2 items-center gap-2 shrink-0">
         <FileIcon fileName={safeName} />
         <input
@@ -59,10 +54,7 @@ export default function Editor({ files, activeIndex, setActiveIndex, addNewFile,
         />
       </div>
 
-      {/* Editor Content Area (Scrollable) */}
       <div className="flex-1 relative flex overflow-hidden bg-[#0d1117]">
-        
-        {/* Line Numbers */}
         <div 
           ref={lineRef}
           className="w-12 border-r border-[#30363d] text-right pr-2 py-4 font-mono text-[15px] leading-[1.5] text-gray-600 select-none hidden sm:block overflow-hidden"
@@ -70,15 +62,12 @@ export default function Editor({ files, activeIndex, setActiveIndex, addNewFile,
           {safeCode.split('\n').map((_, i) => <div key={i}>{i + 1}</div>)}
         </div>
         
-        {/* Code Area */}
         <div className="relative flex-1 h-full">
-          {/* Color Highlight Layer (Pre) */}
           <pre 
             ref={preRef}
             className="absolute inset-0 w-full h-full p-4 font-mono text-[15px] leading-[1.5] pointer-events-none whitespace-pre overflow-hidden text-[#e6edf3] m-0"
             dangerouslySetInnerHTML={{ __html: highlightCode(safeCode) + '\n' }}
           />
-          {/* Typing Layer (Textarea) */}
           <textarea
             value={safeCode}
             onChange={(e) => updateCode(e.target.value)}
@@ -87,7 +76,6 @@ export default function Editor({ files, activeIndex, setActiveIndex, addNewFile,
             className="absolute inset-0 w-full h-full p-4 bg-transparent text-transparent caret-white font-mono text-[15px] leading-[1.5] outline-none resize-none whitespace-pre overflow-auto m-0"
           />
         </div>
-
       </div>
     </div>
   );
