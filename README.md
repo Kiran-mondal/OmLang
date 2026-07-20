@@ -1,6 +1,13 @@
-# 🚀 OmLang - The Next-Gen Multi-Target Programming Language
+<div align="center">
+  <img src="./app/icon.svg" alt="The Matrix Om - OmLang Logo" width="200" height="200" />
+  <h1>OmLang</h1>
+  <p><b>The Next-Gen Multi-Target Programming Language</b></p>
+</div>
 
-Welcome to **OmLang**, a modern, lightweight, and highly modular programming language built for seamless execution across Web, APK, and Local environments. 
+
+---
+
+Welcome to OmLang, a modern, lightweight, and highly modular programming language built for seamless execution across Web, APK, and Local environments. 
 
 This project brings a completely custom compiler engine to life with dynamic client-side mechanics, a smart instruction evaluation system, and zero-latency performance—optimized to run perfectly directly in your browser.
 
@@ -19,10 +26,10 @@ OmLang is designed to compete with the newest generation of programming language
 
 | Feature / Paradigm | 🚀 OmLang | 🌟 Gleam / Mojo / Zig | The OmLang Advantage |
 | :--- | :--- | :--- | :--- |
-| **Execution & Environment** | **100% Client-Side Web Native** | Requires LLVM, Erlang VM, or heavy toolchains | Zero compilation wait times. Write, run, and evaluate instantly in any browser without installing a compiler. |
+| **Execution & Environment** | **100% Client-Side Web Native** | Requires LLVM, Erlang VM, or heavy toolchains | Zero compilation wait times. Write, run, and evaluate instantly in any browser. |
 | **Logic & Control Flow** | `if` / `maybe` / `otherwise` | `case` (Gleam) / `elif` (Mojo) | Abandons rigid systems-level boilerplate in favor of natural, English-like logic flow. |
-| **Data Structures** | `data { name: "Om" }` | Strict Custom Types / Structs | Ultra-minimalist data mapping. No need for complex type definitions just to store simple object data. |
-| **Matrix Operations** | Native `[1, 2 | 3, 4]` | Requires SIMD/Tensors (Mojo) | Built-in, zero-dependency multi-dimensional matrix syntax out of the box, perfect for math and data out-of-the-box. |
+| **Data Structures** | `data { name: "Om" }` | Strict Custom Types / Structs | Ultra-minimalist data mapping. No need for complex type definitions. |
+| **Matrix Operations** | Native `[1, 2 | 3, 4]` | Requires SIMD/Tensors (Mojo) | Built-in, zero-dependency multi-dimensional matrix syntax out of the box. |
 | **Output / Logging** | `show "Hello"` | `io.println()` / `print()` | Parenthesis-free and ultra-minimalist syntax for rapid and clean debugging. |
 
 ---
@@ -47,30 +54,21 @@ The language maps standard complex programming concepts into highly readable, cu
 
 | Keyword / Sign | Programming Concept | Execution Rule Details |
 | :---: | :--- | :--- |
-| **`show`** | Print / Console Log | Prints variables, strings (e.g., `show "Hello"`), or matrices to the terminal without parentheses. |
+| **`show`** | Print / Console Log | Prints variables, strings, or matrices to the terminal without parentheses. |
 | **`data { ... }`** | Dictionary / Object | Used to map key-value pairs cleanly into memory. |
 | **`matrix`** | 2D Array / Grid | Declares a matrix natively. Pipe `|` separates rows, comma `,` separates columns. |
 | **`for ... to`** | For Loop | Iterates a variable sequentially. Syntax: `for i = 1 to 5 { ... }`. |
 | **`while`** | While Loop | Executes a block of code continuously as long as the condition remains true. |
-| **`maybe`** / **`otherwise`** | Conditionals | Evaluates mathematical and logical expressions to control execution flow dynamically (alternative to else-if/else). |
+| **`maybe`** / **`otherwise`** | Conditionals | Evaluates mathematical and logical expressions to control execution flow dynamically. |
 
 ---
 
-## 🛠️ Tech Stack & Engine Architecture Behind the Project
+## 🛠️ Tech Stack & Engine Architecture
 
-This project leverages modern production tools optimized for ultra-fast, cloud-native execution and zero server lag:
-
-* **Frontend & UI Architecture:** Monolithic DOM setup powered by **Next.js/React**, providing a responsive, dark-mode Web IDE layout.
-* **Modular Compiler Engine:** The core brain is split into highly scalable sub-components (`StandardLibrary.js`, `Utils.js`, `Evaluator.js`, `Engine.js`) for rapid syntax parsing and clean global/local scope management.
-* **Memory Management:** Custom state-driven RAM mapping that tracks variables, loops, and matrix structures in real-time execution.
-* **Hosting Platform:** High-performance deployment powered by **Vercel's Global Edge Network**.
-
----
-
-## 🚀 How This Project Runs Globally
-1. **GitHub Repository:** Acts as the public codebase core, managing file updates and modular engine configurations.
-2. **Vercel Integration:** Watches the GitHub repository. Whenever a change is committed, Vercel triggers an instantaneous cloud deployment build.
-3. **Serverless Architecture:** Operates with 100% static client-side evaluation, meaning zero database friction, zero runtime server bottlenecks, and lightning-fast compilation directly in the user's browser.
+* **Frontend & UI:** Monolithic DOM setup powered by **Next.js/React**, providing a responsive, dark-mode Web IDE layout.
+* **Modular Compiler Engine:** The core brain is split into highly scalable sub-components (`StandardLibrary.js`, `Utils.js`, `Evaluator.js`, `Engine.js`) for rapid syntax parsing.
+* **Memory Management:** Custom state-driven RAM mapping that tracks variables, loops, and matrix structures in real-time.
+* **Hosting:** High-performance deployment powered by **Vercel's Global Edge Network**.
 
 ---
 *Developed with 💻 by Kiran Mondal.*
