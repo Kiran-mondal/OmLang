@@ -13,17 +13,17 @@ Anyone can write and compile code instantly without installing anything. Click t
 
 ---
 
-## 🆚 OmLang vs. Traditional Languages
+## 🆚 OmLang vs. Modern Next-Gen Languages
 
-OmLang is designed to bridge the gap between human-readable logic and strict programmatic execution. Here is how its unique "DNA" compares to popular languages like Python and JavaScript:
+OmLang is designed to compete with the newest generation of programming languages by offering a zero-friction, highly readable development experience. Here is how it stands against modern giants like Gleam, Mojo, and Zig:
 
-| Feature / Paradigm | 🚀 OmLang | 🐍 Python / 🟨 JavaScript | The OmLang Advantage |
+| Feature / Paradigm | 🚀 OmLang | 🌟 Gleam / Mojo / Zig | The OmLang Advantage |
 | :--- | :--- | :--- | :--- |
-| **Output / Logging** | `show "Hello"` | `print("Hello")` / `console.log()` | Parenthesis-free and ultra-minimalist syntax for rapid debugging. |
-| **Complex Conditions** | `if` / `maybe` / `otherwise` | `if` / `elif` / `else` | Reads exactly like natural English, making logic flows highly intuitive. |
-| **Data Structures** | `data { name: "Om" }` | `{"name": "Om"}` / `Object` | The explicit `data` keyword instantly differentiates logic blocks from data storage. |
-| **Matrix Operations** | Native `[1, 2 | 3, 4]` | Requires `NumPy` or `[[1, 2], [3, 4]]` | Built-in, zero-dependency multi-dimensional matrix support out of the box. |
-| **Execution Engine** | 100% Client-Side In-Browser | Requires local interpreters or Node.js | Zero-latency, zero-setup execution. Write and run instantly on the web. |
+| **Execution & Environment** | **100% Client-Side Web Native** | Requires LLVM, Erlang VM, or heavy toolchains | Zero compilation wait times. Write, run, and evaluate instantly in any browser without installing a compiler. |
+| **Logic & Control Flow** | `if` / `maybe` / `otherwise` | `case` (Gleam) / `elif` (Mojo) | Abandons rigid systems-level boilerplate in favor of natural, English-like logic flow. |
+| **Data Structures** | `data { name: "Om" }` | Strict Custom Types / Structs | Ultra-minimalist data mapping. No need for complex type definitions just to store simple object data. |
+| **Matrix Operations** | Native `[1, 2 | 3, 4]` | Requires SIMD/Tensors (Mojo) | Built-in, zero-dependency multi-dimensional matrix syntax out of the box, perfect for math and data out-of-the-box. |
+| **Output / Logging** | `show "Hello"` | `io.println()` / `print()` | Parenthesis-free and ultra-minimalist syntax for rapid and clean debugging. |
 
 ---
 
