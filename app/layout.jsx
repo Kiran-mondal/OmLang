@@ -4,6 +4,10 @@ export const metadata = {
   title: 'OmLang | The Modern Programming Language',
   description: 'OmLang is an open-source, multi-target programming language supporting Web, APK, and Local execution with built-in matrix logic.',
   keywords: ['OmLang', 'Programming Language', 'Compiler', 'Open Source', 'Matrix Math', 'Web IDE'],
+  // 👇 গুগল সাইট ভেরিফিকেশন কোড যুক্ত করা হয়েছে 👇
+  verification: {
+    google: 'ViFkQdkRUnzWSJQ2Nyxhn0ntjw_cndqipV2e1WmN2Xc',
+  },
   openGraph: {
     title: 'OmLang | Write Once, Run Anywhere',
     description: 'Explore the next generation of programming with OmLang.',
