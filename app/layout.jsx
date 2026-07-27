@@ -1,11 +1,19 @@
 import './globals.css';
-import Link from 'next/link';
+import Navbar from './Navbar'; // 👈 নতুন মেনুবার ইমপোর্ট করা হলো
 
 export const metadata = {
   title: 'OmLang | The Modern Programming Language',
-  description: 'OmLang is an open-source, multi-target programming language...',
+  description: 'OmLang is an open-source, multi-target programming language supporting Web, APK, and Local execution with built-in matrix logic.',
+  keywords: ['OmLang', 'Programming Language', 'Compiler', 'Open Source', 'Matrix Math', 'Web IDE'],
   verification: {
     google: 'ViFkQdkRUnzWSJQ2Nyxhn0ntjw_cndqipV2e1WmN2Xc',
+  },
+  openGraph: {
+    title: 'OmLang | Write Once, Run Anywhere',
+    description: 'Explore the next generation of programming with OmLang.',
+    url: 'https://omlang.quarry.dpdns.org', 
+    siteName: 'OmLang',
+    type: 'website',
   },
 };
 
@@ -13,18 +21,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="bg-[#0a1128] text-white font-sans min-h-screen">
-        {/* মেনুবার / নেভিগেশন */}
-        <nav className="flex justify-between items-center p-5 border-b border-gray-800 bg-gray-900/50 backdrop-blur-md">
-          <div className="text-xl font-bold text-[#00f2fe]">OMLANG</div>
-          <ul className="flex gap-6">
-            <li>
-              <Link href="/" className="hover:text-[#00f2fe] transition-colors">Home</Link>
-            </li>
-            <li>
-              <Link href="/projects" className="hover:text-[#00f2fe] transition-colors">My Projects</Link>
-            </li>
-          </ul>
-        </nav>
+        {/* 👇 এখানে মেনুবার যুক্ত করা হলো 👇 */}
+        <Navbar />
 
         <main className="p-5">{children}</main>
       </body>
