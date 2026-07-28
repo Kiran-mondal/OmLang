@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
         {/* 👇 এখানে মেনুবার যুক্ত করা হলো 👇 */}
         <Navbar />
 
-        <main className="p-5">{children}</main>
+        <main className="w-full h-full">{children}</main>
       </body>
     </html>
   );
