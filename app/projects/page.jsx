@@ -13,7 +13,7 @@ const IDEBackground = () => (
 );
 
 export default function ProjectsPreviewPage() {
-  // Project data list
+  // Project data list including the newly added Pachisi project
   const allProjects = [
     {
       id: "password-guard",
@@ -27,6 +27,31 @@ export default function ProjectsPreviewPage() {
             <path d="M256 80L120 140V240C120 330 176 407 256 432C336 407 392 330 392 240V140L256 80Z" fill="#0d1117"/>
             <circle cx="256" cy="255" r="70" fill="#58a6ff"/>
             <rect x="235" y="240" width="42" height="75" rx="8" fill="#0d1117"/>
+        </svg>
+      )
+    },
+    {
+      id: "pachisi",
+      title: "Pachisi",
+      desc: "Play the ancient Indian epic board game of strategy, heritage, and royal culture.",
+      live: "https://pachisi.quarry.dpdns.org",
+      code: "https://github.com/Kiran-mondal",
+      svg: (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="32" height="32">
+          <defs>
+            <mask id="pasha-hole">
+              <rect width="512" height="512" fill="white" />
+              <circle cx="256" cy="256" r="32" fill="black" />
+            </mask>
+          </defs>
+          <g mask="url(#pasha-hole)" fill="#dc2626">
+            <rect x="232" y="16" width="48" height="480" rx="12" />
+            <rect x="232" y="16" width="48" height="480" rx="12" transform="rotate(45 256 256)" />
+            <rect x="232" y="16" width="48" height="480" rx="12" transform="rotate(90 256 256)" />
+            <rect x="232" y="16" width="48" height="480" rx="12" transform="rotate(135 256 256)" />
+            <circle cx="256" cy="256" r="168" fill="none" stroke="#dc2626" strokeWidth="48" />
+            <circle cx="256" cy="256" r="56" fill="none" stroke="#dc2626" strokeWidth="48" />
+          </g>
         </svg>
       )
     },
@@ -131,4 +156,5 @@ export default function ProjectsPreviewPage() {
       </div>
     </div>
   );
-}
+            }
+            
