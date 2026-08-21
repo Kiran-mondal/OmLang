@@ -88,7 +88,43 @@ export default function ProjectsPreviewPage() {
       live: "https://omlang.quarry.dpdns.org",
       code: "https://github.com/Kiran-mondal",
       svg: null
+    },
+    {
+  id: "triscout",
+  title: "TriScout",
+  desc: "An advanced defensive cybersecurity tool designed for passive vulnerability assessments and automated reporting.",
+  live: "https://tri-scout-sigma.vercel.app",
+  code: "https://github.com/Kiran-mondal/tri-scout",
+  svg: (
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      viewBox="0 0 100 100" 
+      width="34" 
+      height="34"
+    >
+      <g fill="none" stroke="#66ED1E" strokeLinecap="round" strokeLinejoin="round">
+        {/* Outer Thin Hexagon */}
+        <polygon points="50,2 91.6,26 91.6,74 50,98 8.4,74 8.4,26" strokeWidth="1.5" />
+        
+        {/* Inner Thick Hexagon */}
+        <polygon points="50,10 84.6,30 84.6,70 50,90 15.4,70 15.4,30" strokeWidth="3" />
+
+        {/* Inner Grid Lines */}
+        <g strokeWidth="2.5">
+          {/* Diagonal Lines (\ direction) */}
+          <line x1="15.4" y1="30" x2="84.6" y2="70" />
+          <line x1="32.7" y1="20" x2="84.6" y2="50" />
+          <line x1="15.4" y1="50" x2="67.3" y2="80" />
+
+          {/* Diagonal Lines (/ direction) */}
+          <line x1="15.4" y1="50" x2="67.3" y2="20" />
+          <line x1="32.7" y1="80" x2="84.6" y2="50" />
+        </g>
+      </g>
+    </svg>
+  )
     }
+    
   ];
 
   // Hide the current active project (OmLang)
