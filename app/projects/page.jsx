@@ -93,7 +93,7 @@ export default function ProjectsPreviewPage() {
   id: "triscout",
   title: "TriScout",
   desc: "An advanced defensive cybersecurity tool designed for passive vulnerability assessments and automated reporting.",
-  live: "https://tri-scout-sigma.vercel.app",
+  live: "https://triscout.quarry.dpdns.org/",
   code: "https://github.com/Kiran-mondal/tri-scout",
   svg: (
     <svg 
