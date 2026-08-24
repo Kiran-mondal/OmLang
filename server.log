@@ -1,0 +1,11 @@
+
+> omlang-web@1.0.0 dev /app
+> next dev
+
+▲ Next.js 16.3.2 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+✓ Ready in 543ms
+✓ Running next.config took 17ms
+
+ GET / 200 in 3.4s (next.js: 3.1s, application-code: 313ms)
