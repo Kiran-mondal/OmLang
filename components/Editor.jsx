@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
 import { FileIcon } from './Icons';
 
 export default function Editor({ files, activeIndex, setActiveIndex, addNewFile, renameFile, updateCode, highlightCode }) {
@@ -8,6 +8,12 @@ export default function Editor({ files, activeIndex, setActiveIndex, addNewFile,
 
   const preRef = useRef(null);
   const lineRef = useRef(null);
+
+  // ⚡ Bolt Optimization: Memoize line numbers to prevent expensive array allocations and re-renders on every keystroke.
+  const lineCount = (safeCode.match(/\n/g) || []).length + 1;
+  const lineNumbers = useMemo(() => {
+    return Array.from({ length: lineCount }, (_, i) => <div key={i}>{i + 1}</div>);
+  }, [lineCount]);
 
   const handleScroll = (e) => {
     if (preRef.current) {
@@ -63,7 +69,7 @@ export default function Editor({ files, activeIndex, setActiveIndex, addNewFile,
           ref={lineRef}
           className="w-12 border-r border-[#30363d] text-right pr-2 py-4 font-mono text-[15px] leading-[1.5] text-gray-600 select-none hidden sm:block overflow-hidden"
         >
-          {safeCode.split('\n').map((_, i) => <div key={i}>{i + 1}</div>)}
+          {lineNumbers}
         </div>
         
         <div className="relative flex-1 h-full">
