@@ -13,8 +13,10 @@ export default function Navbar() {
       
       {/* Mobile hamburger button */}
       <button 
-        className="md:hidden text-[#c9d1d9] hover:text-[#58a6ff] text-2xl focus:outline-none transition-transform duration-300 hover:scale-110"
+        className="md:hidden text-[#c9d1d9] hover:text-[#58a6ff] text-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#58a6ff] rounded px-1 transition-transform duration-300 hover:scale-110"
         onClick={() => setIsOpen(!isOpen)}
+        aria-label="Toggle mobile menu"
+        aria-expanded={isOpen}
       >
         {isOpen ? '✕' : '☰'}
       </button>
