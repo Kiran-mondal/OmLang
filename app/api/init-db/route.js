@@ -18,8 +18,10 @@ export async function GET() {
       { status: 200 }
     );
   } catch (error) {
+    // Sentinel Security: Log internal error without exposing details to client
+    console.error("Database initialization failed:", error);
     return NextResponse.json(
-      { error: error.message }, 
+      { error: "Internal Server Error during database initialization." },
       { status: 500 }
     );
   }
