@@ -11,6 +11,7 @@ export default function Home() {
   const [activeIndex, setActiveIndex] = useState(0);
   
   const [output, setOutput] = useState('');
+  const [isError, setIsError] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
   const activeFile = files[activeIndex] || files[0];
@@ -48,10 +49,13 @@ export default function Home() {
     
     if (!safeName.toLowerCase().endsWith('.om')) {
       setOutput(`[Security Alert] Execution Blocked!\nThe OmLang Engine is strictly locked to run only '.om' language files.\nFile '${safeName}' is not supported.`);
+      setIsError(true);
       return;
     }
     const result = runOmLang(activeFile?.code || '');
-    setOutput(`Compiling ${safeName}...\n\n` + result);
+    const outputMessage = result.success ? result.result : result.error;
+    setOutput(`Compiling ${safeName}...\n\n` + outputMessage);
+    setIsError(!result.success);
   };
 
   const handleSave = async () => {
@@ -68,11 +72,14 @@ export default function Home() {
       const data = await response.json();
       if (response.ok) {
         setOutput(`\n--- CLOUD SYNC ---\n[Success] '${safeName}' saved to Neon DB\nSnippet ID: ${data.data?.id || 'N/A'}\n------------------\n\n` + output);
+        setIsError(false);
       } else {
         setOutput(`\n--- CLOUD SYNC ---\n[Error] ${data.error}\n------------------\n\n` + output);
+        setIsError(true);
       }
     } catch (error) {
       setOutput(`\n--- CLOUD SYNC ---\n[Error] Network failure.\n------------------\n\n` + output);
+      setIsError(true);
     } finally {
       setIsSaving(false);
     }
@@ -94,7 +101,7 @@ export default function Home() {
         />
       </div>
       
-      <Terminal fileName={activeFile?.name || 'main.om'} output={output} />
+      <Terminal fileName={activeFile?.name || 'main.om'} output={output} isError={isError} />
     </div>
   );
 }
