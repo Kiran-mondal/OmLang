@@ -1,5 +1,3 @@
-import React from 'react';
-
 // Animated Background Component matching the IDE/Editor Theme
 const IDEBackground = () => (
   <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-[#0d1117]">
