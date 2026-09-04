@@ -11,6 +11,7 @@ export default function Home() {
   const [activeIndex, setActiveIndex] = useState(0);
   
   const [output, setOutput] = useState('');
+  const [isError, setIsError] = useState(false); // Track error state for Terminal styling
   const [isSaving, setIsSaving] = useState(false);
 
   const activeFile = files[activeIndex] || files[0];
@@ -47,11 +48,21 @@ export default function Home() {
     const safeName = activeFile?.name || 'main.om';
     
     if (!safeName.toLowerCase().endsWith('.om')) {
+      setIsError(true);
       setOutput(`[Security Alert] Execution Blocked!\nThe OmLang Engine is strictly locked to run only '.om' language files.\nFile '${safeName}' is not supported.`);
       return;
     }
-    const result = runOmLang(activeFile?.code || '');
-    setOutput(`Compiling ${safeName}...\n\n` + result);
+    
+    // Process the execution payload from the updated Engine
+    const executionData = runOmLang(activeFile?.code || '');
+    
+    if (executionData.success) {
+      setIsError(false);
+      setOutput(`Compiling ${safeName}...\n\n${executionData.result}`);
+    } else {
+      setIsError(true);
+      setOutput(`Compiling ${safeName}...\n\n${executionData.error}`);
+    }
   };
 
   const handleSave = async () => {
@@ -66,12 +77,16 @@ export default function Home() {
         body: JSON.stringify({ title: safeName, code: safeCode })
       });
       const data = await response.json();
+      
       if (response.ok) {
-        setOutput(`\n--- CLOUD SYNC ---\n[Success] '${safeName}' saved to Neon DB\nSnippet ID: ${data.data?.id || 'N/A'}\n------------------\n\n` + output);
+        setIsError(false);
+        setOutput(`\n--- CLOUD SYNC ---\n[Success] '${safeName}' saved to Neon DB\nSnippet ID: ${data.data?.id || 'N/A'}\n------------------\n\n` + (data.output || output));
       } else {
-        setOutput(`\n--- CLOUD SYNC ---\n[Error] ${data.error}\n------------------\n\n` + output);
+        setIsError(true);
+        setOutput(`\n--- CLOUD SYNC ---\n[Error] ${data.error || data.output}\n------------------\n\n` + output);
       }
     } catch (error) {
+      setIsError(true);
       setOutput(`\n--- CLOUD SYNC ---\n[Error] Network failure.\n------------------\n\n` + output);
     } finally {
       setIsSaving(false);
@@ -94,7 +109,7 @@ export default function Home() {
         />
       </div>
       
-      <Terminal fileName={activeFile?.name || 'main.om'} output={output} />
+      <Terminal fileName={activeFile?.name || 'main.om'} output={output} isError={isError} />
     </div>
   );
 }
