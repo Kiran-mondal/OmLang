@@ -51,10 +51,10 @@ export async function POST(request) {
     }, { status: 200 });
 
   } catch (error) {
-    console.error("Server Error:", error);
+    console.error("Database Error:", error);
     return NextResponse.json(
-      { error: "Failed to process request." }, 
-      { status: 500 } //[span_13](start_span)[span_13](end_span)
+      { error: "Failed to save code to the database." },
+      { status: 500 }
     );
   }
 }
