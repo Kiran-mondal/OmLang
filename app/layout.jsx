@@ -20,6 +20,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        {/* Telegram Web App Script */}
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+      </head>
       <body className="bg-[#0a1128] text-white font-sans min-h-screen">
         {/* 👇 এখানে মেনুবার যুক্ত করা হলো 👇 */}
         <Navbar />
