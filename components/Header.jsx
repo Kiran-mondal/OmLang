@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function Header({ handleSave, isSaving, handleRun }) {
   return (
     <div className="flex items-center justify-between bg-[#010409] p-3 md:p-4 border-b border-[#30363d]">
