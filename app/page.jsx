@@ -6,6 +6,14 @@ import Header from '../components/Header';
 import Editor from '../components/Editor';
 import Terminal from '../components/Terminal';
 
+const REGEX_AMP = /&/g;
+const REGEX_LT = /</g;
+const REGEX_GT = />/g;
+const REGEX_QUOTE = /(&quot;.*?&quot;|".*?")/g;
+const REGEX_COMMENT = /(\/\/.*)/g;
+const REGEX_KEYWORD = /\b(show|matrix|for|to|while|if|else)\b/g;
+const REGEX_NUMBER = /\b(\d+)\b/g;
+
 export default function Home() {
   const [files, setFiles] = useState([{ name: 'main.om', code: 'show "Hello World"\nfor x = 1 to 3 {\n  show "OmLang " + x\n}' }]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -35,11 +43,11 @@ export default function Home() {
 
   const highlightCode = (code) => {
     if (!code) return '';
-    let text = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    text = text.replace(/(&quot;.*?&quot;|".*?")/g, "<span style='color:#a5d6ff'>$1</span>");
-    text = text.replace(/(\/\/.*)/g, "<span style='color:#8b949e'>$1</span>");
-    text = text.replace(/\b(show|matrix|for|to|while|if|else)\b/g, "<span style='color:#ff7b72'>$1</span>");
-    text = text.replace(/\b(\d+)\b/g, "<span style='color:#79c0ff'>$1</span>");
+    let text = code.replace(REGEX_AMP, '&amp;').replace(REGEX_LT, '&lt;').replace(REGEX_GT, '&gt;');
+    text = text.replace(REGEX_QUOTE, "<span style='color:#a5d6ff'>$1</span>");
+    text = text.replace(REGEX_COMMENT, "<span style='color:#8b949e'>$1</span>");
+    text = text.replace(REGEX_KEYWORD, "<span style='color:#ff7b72'>$1</span>");
+    text = text.replace(REGEX_NUMBER, "<span style='color:#79c0ff'>$1</span>");
     return text;
   };
 
