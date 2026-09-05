@@ -58,6 +58,7 @@ export default function Home() {
     if (!safeName.toLowerCase().endsWith('.om')) {
       setIsError(true);
       setOutput(`[Security Alert] Execution Blocked!\nThe OmLang Engine is strictly locked to run only '.om' language files.\nFile '${safeName}' is not supported.`);
+      setIsError(true);
       return;
     }
     
@@ -96,6 +97,7 @@ export default function Home() {
     } catch (error) {
       setIsError(true);
       setOutput(`\n--- CLOUD SYNC ---\n[Error] Network failure.\n------------------\n\n` + output);
+      setIsError(true);
     } finally {
       setIsSaving(false);
     }
