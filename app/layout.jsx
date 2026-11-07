@@ -1,4 +1,5 @@
 import './globals.css';
+import Script from 'next/script';
 import Navbar from './Navbar'; // 👈 নতুন মেনুবার ইমপোর্ট করা হলো
 
 export const metadata = {
@@ -21,14 +22,24 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        {/* Google Tag Manager */}
+        <Script id="gtm-script" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+          `}
+        </Script>
+        <Script
+          src="https://www.googletagmanager.com/gtm.js?id=GTM-KG7Z6RJG"
+          strategy="afterInteractive"
+        />
+
         {/* Telegram Web App Script */}
-        <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-KG7Z6RJG"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-</script>
-        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+        <Script
+          src="https://telegram.org/js/telegram-web-app.js"
+          strategy="beforeInteractive"
+        />
       </head>
       <body className="bg-[#0a1128] text-white font-sans min-h-screen">
         {/* 👇 এখানে মেনুবার যুক্ত করা হলো 👇 */}
