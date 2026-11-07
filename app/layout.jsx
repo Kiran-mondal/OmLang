@@ -22,6 +22,12 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         {/* Telegram Web App Script */}
+        <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-KG7Z6RJG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
         <script src="https://telegram.org/js/telegram-web-app.js"></script>
       </head>
       <body className="bg-[#0a1128] text-white font-sans min-h-screen">
